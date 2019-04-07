@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import {Stack, Router, Scene} from 'react-native-router-flux';
 import { Provider } from "react-redux";
 
-import {Manga, Characters} from './sections';
+import {Manga, MangaDetail} from './sections';
 import {configureAxios} from './api';
 import * as colors from "./commons/colors";
 import { store } from "./config/redux";
@@ -28,10 +28,10 @@ export default class App extends Component {
                 initial
               />
               <Scene
-                key={"Characters"}
-                component={Characters}
-                {...navBarStyles}
-              />
+              key={"MangaDetail"}
+              component={MangaDetail}
+              {...navBarStyles}
+            />
           </Stack>
         </Router>
       </Provider>

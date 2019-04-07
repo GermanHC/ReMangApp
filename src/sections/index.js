@@ -1,4 +1,4 @@
 import Manga from "./manga";
-import Characters from "./characters";
+import MangaDetail from "./mangaDetail";
 
-export { Manga, Characters };
+export { Manga, MangaDetail };

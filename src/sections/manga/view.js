@@ -16,7 +16,7 @@ class Manga extends Component {
     _onMangaTapped = mangaElement => {
         const title = mangaElement.title;
         this.props.updateMangaSelected(mangaElement);
-        Actions.Characters({ mangaElement , title: mangaElement.title});
+        Actions.MangaDetail({ mangaElement , title: mangaElement.title});
     };
 
     _keyExtractor = (item, index) => `${item.mal_id}`;
