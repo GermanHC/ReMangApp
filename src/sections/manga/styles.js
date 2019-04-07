@@ -4,7 +4,7 @@ import * as colors from "../../commons/colors";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lime
+    backgroundColor: colors.main
   },
   list: { paddingTop: 20 },
   noResults: {

@@ -6,16 +6,15 @@ import * as colors from "../../commons/colors";
 
 class Characters extends Component {
     static defaultProps = {
-        character: {}
+        manga: {}
     };
 
     render() {
-        const {character} = this.props;
+        const { manga } = this.props;
         return (
             <View style={styles.container}>
-                <Text>{"Character:"}</Text>
-                <Text>{character.mal_id}</Text>
-                <Text>{character.name}</Text>
+                <Text>{"Manga:"}</Text>
+                <Text>{manga.title}</Text>
             </View>
         );
     }

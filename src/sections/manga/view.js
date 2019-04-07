@@ -1,35 +1,52 @@
 import React, {Component} from "react";
-import {View, Text, TouchableOpacity} from "react-native";
+import {SafeAreaView, Text, TouchableOpacity,FlatList} from "react-native";
 import {Actions} from "react-native-router-flux";
 
 import styles from "./styles";
 import * as api from "../../api";
 import * as colors from "../../commons/colors";
+import { MangaCell }  from "../../widgets";
+
 
 class Manga extends Component {
     constructor(props) {
         super(props);
-        api.fetchMangas()
+        this.state = { mangasList: [] };
+        this._fetchMangasList();
+    }
+
+    _fetchMangasList() {
+        api
+        .fetchMangas()
         .then(res => {
-            console.log("fetchMangas res:", res);
+            this.setState({ mangasList: res.data.top})
         })
         .catch(err => {
             console.log("fetchMangas res:", err);
         });
-      }
+    }
+    
+    _onMangaTapped = mangaElement => {
+        Actions.Characters({ mangaElement , title: mangaElement.title});
+    };
+
+    _keyExtractor = (item, index) => `${item.mal_id}`;
+
+    _renderItem = ({ item, index }) => (
+        <MangaCell mangaElement={item} onPress={this._onMangaTapped} />
+    ); 
+      
     render() {
+        const { mangasList } = this.state;
         return (
-            <View style={styles.container}>
-                <TouchableOpacity
-                    onPress={() =>
-                        Actions.Characters({
-                            title:"German",
-                            character: { mal_id:12, name="German Hernandez"}
-                        })
-                    }
-                    ><Text>Ir a Characters</Text>
-                </TouchableOpacity>
-            </View>
+            <SafeAreaView style={styles.container}>
+                <FlatList 
+                    data={mangasList}
+                    keyExtractor={ this._keyExtractor }
+                    renderItem={ this._renderItem }
+                    numColumns={2}
+                />
+            </SafeAreaView>
         );
     }
 }
