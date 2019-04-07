@@ -1,12 +1,14 @@
 import React, {Component} from "react";
 import {TouchableOpacity, Image} from "react-native";
+import * as Animatable from "react-native-animatable";
 
 import styles from "./styles";
  
 class MangaCell extends Component {
     static defaultProps = {
         mangaElement: {},
-        onPress: () => {}
+        onPress: () => {},
+        index: null
     };
 
     _onCellTapped = () => {
@@ -18,11 +20,34 @@ class MangaCell extends Component {
         const {mangaElement} = this.props;
         const source = mangaElement && mangaElement.image_url ? {uri: mangaElement.image_url} : null;
         return  (
-        <TouchableOpacity onPress={() => this._onCellTapped()} style={styles.cell}>
-            <Image source={source} style={styles.image}></Image>
-        </TouchableOpacity> 
+            <Animatable.View
+            useNativeDriver={true}
+            animation={index % 2 ? "bounceInRight" : "bounceInLeft"}
+            >   
+                <TouchableOpacity onPress={() => this._onCellTapped()} style={styles.cell}>
+                    <Image source={source} style={styles.image}></Image>
+                </TouchableOpacity> 
+            </Animatable.View>
         );
     }
+
+    render() {
+        const { mangaElement, index } = this.props;
+        const source = mangaElement && mangaElement.image_url ? {uri: mangaElement.image_url} : null;
+        return (
+          <Animatable.View
+            useNativeDriver={true}
+            animation={index % 2 ? "bounceInRight" : "bounceInLeft"}
+          >
+            <TouchableOpacity
+              onPress={() => this._onCellTapped()}
+              style={styles.cell}
+            >
+              <Image source={source} style={styles.image} />
+            </TouchableOpacity>
+          </Animatable.View>
+        );
+      }
 }
 
 export default MangaCell;

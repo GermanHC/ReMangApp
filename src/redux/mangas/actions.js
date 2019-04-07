@@ -40,7 +40,7 @@ export function fetchMangasList() {
       api
         .fetchMangas()
         .then(res => {
-          const list = res.data.records;
+          const list = res.data.top;
           const total = res.data.total;
           if (!_.isEqual(list, asyncStorageList)) {
             dispatch(updateMangasList(list, total));

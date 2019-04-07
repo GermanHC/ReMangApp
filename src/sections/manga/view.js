@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import {SafeAreaView, Text, TouchableOpacity,FlatList} from "react-native";
+import {SafeAreaView, Text, RefreshControl, FlatList} from "react-native";
 import {Actions} from "react-native-router-flux";
 
 import styles from "./styles";
-import * as api from "../../api";
 import * as colors from "../../commons/colors";
 import { MangaCell }  from "../../widgets";
 
@@ -11,33 +10,34 @@ import { MangaCell }  from "../../widgets";
 class Manga extends Component {
     constructor(props) {
         super(props);
-        this.state = { mangasList: [] };
-        this._fetchMangasList();
+        props.getMangasList();
     }
-
-    _fetchMangasList() {
-        api
-        .fetchMangas()
-        .then(res => {
-            this.setState({ mangasList: res.data.top})
-        })
-        .catch(err => {
-            console.log("fetchMangas res:", err);
-        });
-    }
-    
+   
     _onMangaTapped = mangaElement => {
+        const title = mangaElement.title;
+        this.props.updateMangaSelected(mangaElement);
         Actions.Characters({ mangaElement , title: mangaElement.title});
     };
 
     _keyExtractor = (item, index) => `${item.mal_id}`;
 
     _renderItem = ({ item, index }) => (
-        <MangaCell mangaElement={item} onPress={this._onMangaTapped} />
+        <MangaCell mangaElement={item} 
+        index={index}
+        onPress={this._onMangaTapped} />
     ); 
       
+    
+    _renderNoResultsText = isFetching => {
+        if (isFetching) {
+        return null;
+        }
+
+        return <Text style={styles.noResults}>{"No hay ningún manga disponible"}</Text>;
+    };
+
     render() {
-        const { mangasList } = this.state;
+        const { mangasList , isFetching} = this.props;
         return (
             <SafeAreaView style={styles.container}>
                 <FlatList 
@@ -45,6 +45,15 @@ class Manga extends Component {
                     keyExtractor={ this._keyExtractor }
                     renderItem={ this._renderItem }
                     numColumns={2}
+                    ListEmptyComponent={_ => this._renderNoResultsText(isFetching)}
+                    refreshControl={
+                        <RefreshControl
+                          onRefresh={this.props.getMangasList}
+                          refreshing={isFetching}
+                          tintColor={colors.white}
+                          colors={[colors.white]}
+                        />
+                    }
                 />
             </SafeAreaView>
         );
