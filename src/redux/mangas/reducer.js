@@ -2,7 +2,6 @@ import * as types from './types';
 
 const initialState = {
     list:[],
-    total: 0,
     isFetching: false,
 }
 
@@ -11,8 +10,7 @@ export default function reducer(state = initialState, action= {}) {
         case types.MANGA_UPDATE_LIST:
             return {
                 ...state,
-                list: action.list,
-                total: action.total
+                list: action.list 
             };
         case types.MANGA_UPDATE_FETCHING:
             return {

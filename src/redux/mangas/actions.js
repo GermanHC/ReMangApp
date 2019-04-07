@@ -4,11 +4,10 @@ import _ from "lodash";
 import * as types from "./types";
 import * as api from "../../api";
 
-function updateMangasList(list, total) {
+function updateMangasList(list) {
   return {
     type: types.MANGA_UPDATE_LIST,
-    list: list,
-    total
+    list: list
   };
 }
 
@@ -41,9 +40,8 @@ export function fetchMangasList() {
         .fetchMangas()
         .then(res => {
           const list = res.data.top;
-          const total = res.data.total;
           if (!_.isEqual(list, asyncStorageList)) {
-            dispatch(updateMangasList(list, total));
+            dispatch(updateMangasList(list));
             AsyncStorage.setItem("MANGAS_LIST", JSON.stringify(list));
           }
         })
